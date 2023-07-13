@@ -31,7 +31,7 @@ for (i in 1:length(sections)) {
     filter(get(section_var) == sections[i]) |>
     dplyr::select(-one_of(section_var))
   
-  for (j in 1:length(sub_section$title)){
+  for (j in 1:nrow(sub_section)){
     
     cat("\n##", sub_section$title[j], "\n")
     cat("\n#### ", str_to_title(section_var), ": ", sections[i], sep = "") 
@@ -41,6 +41,11 @@ for (i in 1:length(sections)) {
     cat("\n- Region:", sub_section$region[j], "\n")
     cat("- Category:", sub_section$category[j], "\n")
     cat("- Partition:", sub_section$partition[j], "\n")
+    
+    record <- sub_section[j,] |>
+      select(where(~!any(is.na(.))), -title, -region, 
+             -category, -partition, -poc, -poc_email)
+
 
     # cat("-", sub_section$goal[j], "\n")
     # cat("-", sub_section$lead_program[j], "\n")
