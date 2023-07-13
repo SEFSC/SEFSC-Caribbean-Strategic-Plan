@@ -7,50 +7,55 @@ format:
     scrollable: true
 ---
 
-```{r warning=FALSE, echo=FALSE, message=FALSE, results ='asis'}
+```{r warning=FALSE, echo=FALSE, message=FALSE, results ="asis"}
 librarian::shelf(tidyverse, readxl)
 
-sheets = excel_sheets("Planning-Overview-Presentation.xlsx")
-file = map_dfr(.x = set_names(sheets),
+sheets <- excel_sheets("Planning-Overview-Presentation.xlsx")
+file <- map_dfr(.x = set_names(sheets),
                read_excel, 
-               path = "Planning-Overview-Presentation.xlsx", 
-               .id = 'sheet')
+               path = "Planning-Overview-Presentation.xlsx")
 
 # Choose sections of presentation
-section_var = 'status'
+section_var <- "status"
 
-sections = file |>
+sections <- file |>
   select(matches(section_var)) |>
   distinct() |>
   pull()
 
 for (i in 1:length(sections)) {
-  cat('\n#', sections[i], '\n')
-  sub_section = file |>
-    filter(get(section_var) == sections[i])
+  
+  cat("\n#", sections[i], "\n")
+  
+  sub_section <- file |>
+    filter(get(section_var) == sections[i]) |>
+    dplyr::select(-one_of(section_var))
   
   for (j in 1:length(sub_section$title)){
-    record = sub_section[j,]
     
-    cat('\n##', sub_section$title[j], '\n')
-    cat('\n####', sections[i], '\n')
-    cat('-', sub_section$goal[j], '\n')
-    cat('-', sub_section$lead_program[j], '\n')
-    cat('-', sub_section$poc[j], '\n')
-    cat('-', sub_section$poc_email[j], '\n')
-    cat('-', sub_section$region[j], '\n')
-    cat('-', sub_section$category[j], '\n')
-    cat('-', sub_section$partition[j], '\n')
-    cat('-', sub_section$fleet[j], '\n')
-    cat('-', sub_section$mode[j], '\n')
-    cat('-', sub_section$metrics[j], '\n')
-    cat('-', sub_section$target_species[j], '\n')
-    cat('-', sub_section$depth_range[j], '\n')
-    cat('-', sub_section$organizations[j], '\n')
-    # cat('-', sub_section$status[j], '\n')
-    cat('-', sub_section$start_year[j], '\n')
-    cat('-', sub_section$end_year[j], '\n')
-    cat('![](', paste0(" images/", sub_section$image[j]), '){.absolute  bottom="110" right="130" width="300"}', '\n')
+    cat("\n##", sub_section$title[j], "\n")
+    cat("\n#### ", str_to_title(section_var), ": ", sections[i], sep = "") 
+    cat("\n#### Contact: [", sub_section$poc[j], "](mailto:", 
+        sub_section$poc_email[j], ")", sep = "")
+    
+    cat("\n- Region:", sub_section$region[j], "\n")
+    cat("- Category:", sub_section$category[j], "\n")
+    cat("- Partition:", sub_section$partition[j], "\n")
+
+    # cat("-", sub_section$goal[j], "\n")
+    # cat("-", sub_section$lead_program[j], "\n")
+    # cat("-", sub_section$poc[j], "\n")
+    # cat("-", sub_section$fleet[j], "\n")
+    # cat("-", sub_section$mode[j], "\n")
+    # cat("-", sub_section$metrics[j], "\n")
+    # cat("-", sub_section$target_species[j], "\n")
+    # cat("-", sub_section$depth_range[j], "\n")
+    # cat("-", sub_section$organizations[j], "\n")
+    # cat("-", sub_section$start_year[j], "\n")
+    # cat("-", sub_section$end_year[j], "\n")
+    # cat("![](", paste0(" images/", sub_section$image[j]), "){.absolute  bottom="110" right="130" width="300"}", "\n")
+    
+    
   }
 }
 ```
