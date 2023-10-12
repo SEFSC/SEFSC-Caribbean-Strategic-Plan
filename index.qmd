@@ -5,6 +5,7 @@ format:
   revealjs:
     smaller: true
     scrollable: true
+    link-external-newwindow: true
 ---
 
 ```{r warning=FALSE, echo=FALSE, message=FALSE, results ="asis"}
@@ -35,8 +36,8 @@ for (i in 1:length(sections)) {
     
     cat("\n##", sub_section$title[j], "\n")
     cat("\n#### ", str_to_title(section_var), ": ", sections[i], sep = "") 
-    cat("\n#### Contact: [", sub_section$poc[j], "](mailto:", 
-        sub_section$poc_email[j], ")", sep = "")
+    cat("\n#### Contact: [", sub_section$poc[j], "](", 
+        sub_section$poc_website[j], ")", sep = "")
     
     cat("\n- Region:", sub_section$region[j], "\n")
     cat("- Category:", sub_section$category[j], "\n")
@@ -44,7 +45,7 @@ for (i in 1:length(sections)) {
     
     record <- sub_section[j,] |>
       select(where(~!any(is.na(.))), -title, -region, 
-             -category, -partition, -poc, -poc_email)
+             -category, -partition, -poc, -poc_website)
 
 
     # cat("-", sub_section$goal[j], "\n")
