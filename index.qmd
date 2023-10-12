@@ -3,6 +3,8 @@ title: "Planning Overview"
 author: "Caribbean Strategic Planning Team"
 format: 
   revealjs:
+    toc: true
+    toc-depth: 1
     smaller: true
     scrollable: true
     link-external-newwindow: true
@@ -24,6 +26,8 @@ sections <- file |>
   distinct() |>
   pull()
 
+
+
 for (i in 1:length(sections)) {
   
   cat("\n#", sections[i], "\n")
@@ -37,7 +41,7 @@ for (i in 1:length(sections)) {
     cat("\n##", sub_section$title[j], "\n")
     cat("\n#### ", str_to_title(section_var), ": ", sections[i], sep = "") 
     cat("\n#### Contact: [", sub_section$poc[j], "](", 
-        sub_section$poc_website[j], ")", sep = "")
+        sub_section$website[j], ")", sep = "")
     
     cat("\n- Region:", sub_section$region[j], "\n")
     cat("- Category:", sub_section$category[j], "\n")
@@ -45,20 +49,12 @@ for (i in 1:length(sections)) {
     
     record <- sub_section[j,] |>
       select(where(~!any(is.na(.))), -title, -region, 
-             -category, -partition, -poc, -poc_website)
-
-
-    # cat("-", sub_section$goal[j], "\n")
-    # cat("-", sub_section$lead_program[j], "\n")
-    # cat("-", sub_section$poc[j], "\n")
-    # cat("-", sub_section$fleet[j], "\n")
-    # cat("-", sub_section$mode[j], "\n")
-    # cat("-", sub_section$metrics[j], "\n")
-    # cat("-", sub_section$target_species[j], "\n")
-    # cat("-", sub_section$depth_range[j], "\n")
-    # cat("-", sub_section$organizations[j], "\n")
-    # cat("-", sub_section$start_year[j], "\n")
-    # cat("-", sub_section$end_year[j], "\n")
+             -category, -partition, -poc, -website)
+    
+    for (k in 1:ncol(record)){
+    cat(paste0("- ", str_to_title(names(record)[k]),": ", pull(record[k]), "\n"))
+    }
+    
     # cat("![](", paste0(" images/", sub_section$image[j]), "){.absolute  bottom="110" right="130" width="300"}", "\n")
     
     
