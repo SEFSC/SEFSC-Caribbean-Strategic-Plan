@@ -13,10 +13,10 @@ format:
 ```{r warning=FALSE, echo=FALSE, message=FALSE, results ="asis"}
 librarian::shelf(tidyverse, readxl)
 
-sheets <- excel_sheets("Planning-Overview-Presentation.xlsx")
+sheets <- excel_sheets("Caribbean_Fisheries_Projects.xlsx")
 file <- map_dfr(.x = set_names(sheets),
                read_excel, 
-               path = "Planning-Overview-Presentation.xlsx")
+               path = "Caribbean_Fisheries_Projects.xlsx")
 
 # Choose sections of presentation
 section_var <- "status"
